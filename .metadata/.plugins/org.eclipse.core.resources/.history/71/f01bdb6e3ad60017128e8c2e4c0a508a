@@ -1,0 +1,12 @@
+package br.com.sistemalab.controller;
+
+import java.util.Map;
+import org.springframework.web.bind.annotation.RestController;
+import br.com.sistemalab.model.Usuario;
+
+@RestController
+public class UsuarioController {
+	
+	Map<Integer, Usuario> usuarios;
+
+}

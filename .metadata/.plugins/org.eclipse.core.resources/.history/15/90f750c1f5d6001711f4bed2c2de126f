@@ -1,0 +1,58 @@
+package br.com.sistemalab.controller;
+
+import java.awt.PageAttributes.MediaType;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import br.com.sistemalab.model.Usuario;
+
+@Controller
+@RestController
+public class UsuarioController {
+	
+	Map<Integer, Usuario> usuarios;
+	Integer proximoId = 1;
+	
+	//negocios
+	private Usuario cadastrar(Usuario usuario) {
+		
+		if(usuarios == null) {
+			usuarios = new HashMap<>();
+		}
+		usuario.setId(proximoId);
+		//criar ID
+		proximoId ++;
+		usuarios.put(usuario.getId(), usuario);
+		
+		return usuario;
+	}
+	
+	private Collection<Usuario> buscarTodos(){
+		return usuarios.values();
+	}
+	
+		
+	//End points
+	
+	@RequestMapping(method=RequestMethod.POST, value ="/usuarios", consumes=org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
+		Usuario usuarioCadastrado = cadastrar(usuario);
+		return new ResponseEntity<Usuario>(usuarioCadastrado, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value ="/usuarios", produces=org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Usuario>> buscarTodosUsuarios(@RequestBody Usuario usuario) {
+		
+		Collection<Usuario> usuariosBuscados = buscarTodos();
+		return new ResponseEntity<>(usuariosBuscados, HttpStatus.OK);
+	}
+
+}

@@ -1,0 +1,43 @@
+package br.com.sistemalab.controller;
+
+import java.awt.PageAttributes.MediaType;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import br.com.sistemalab.model.Usuario;
+
+@Controller
+@RestController
+public class UsuarioController {
+	
+	Map<Integer, Usuario> usuarios;
+	Integer proximoId = 1;
+	
+	//negocios
+	private Usuario cadastrar(Usuario usuario) {
+		
+		if(usuarios == null) {
+			usuarios = new HashMap<>();
+		}
+		usuario.setId(proximoId);
+		//criar ID
+		proximoId ++;
+		usuarios.put(usuario.getId(), usuario);
+		
+		return usuario;
+	}
+	
+		
+	//End points
+	
+	@RequestMapping(method=RequestMethod.POST, value ="/usuarios", consumes=org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+	public void cadastrarUsuario(@RequestBody Usuario usuario) {
+		System.out.println("Usuario");
+	}
+
+}
